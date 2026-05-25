@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RG Automotores · Sáenz Peña, Chaco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --negro: #0e0e0e;
+    --blanco: #f8f6f2;
+    --acento: #2563a8;
+    --acento2: #1a4f8a;
+    --gris1: #1a1a1a;
+    --gris2: #2a2a2a;
+    --gris3: #555;
+    --gris4: #999;
+    --borde: rgba(255,255,255,0.08);
+    --radio: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--negro);
+    color: var(--blanco);
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    background: rgba(14,14,14,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--borde);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--blanco);
+    text-decoration: none;
+  }
+  .logo span { color: var(--acento); }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--gris4);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--blanco); }
+
+  .nav-cta {
+    background: var(--acento);
+    color: var(--blanco) !important;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--acento2) !important; color: var(--blanco) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 32px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(37,99,168,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--acento);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 96px);
+    letter-spacing: 4px;
+    line-height: 0.95;
+    margin-bottom: 24px;
+  }
+  .hero h1 span { color: var(--acento); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--gris4);
+    max-width: 440px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .badge {
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 0.5px solid var(--borde);
+    color: var(--gris4);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* ── SECCIÓN AUTOS ── */
+  #autos {
+    padding: 60px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+  }
+  .section-title span { color: var(--acento); }
+
+  /* ── FILTROS ── */
+  .filtros {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .filtro-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 0.5px solid var(--borde);
+    background: transparent;
+    color: var(--gris4);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .filtro-btn:hover { border-color: rgba(255,255,255,0.25); color: var(--blanco); }
+  .filtro-btn.activo { background: var(--acento); color: var(--blanco); border-color: var(--acento); }
+
+  /* ── GRILLA ── */
+  .grilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  /* ── TARJETA ── */
+  .tarjeta {
+    background: var(--gris1);
+    border: 0.5px solid var(--borde);
+    border-radius: var(--radio);
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .tarjeta:hover {
+    border-color: rgba(216,90,48,0.4);
+    transform: translateY(-3px);
+  }
+
+  .tarjeta-foto {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    background: var(--gris2);
+  }
+
+  .tarjeta-foto-placeholder {
+    width: 100%;
+    height: 200px;
+    background: var(--gris2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--gris3);
+    font-size: 13px;
+  }
+  .tarjeta-foto-placeholder svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+  }
+
+  .tarjeta-body { padding: 16px 18px; }
+
+  .tarjeta-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .tarjeta-nombre {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .tarjeta-anio {
+    font-size: 11px;
+    padding: 3px 10px;
+    background: var(--gris2);
+    border-radius: 10px;
+    color: var(--gris4);
+  }
+
+  .tarjeta-precio {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1px;
+    color: var(--acento);
+    margin: 6px 0 12px;
+  }
+
+  .tarjeta-specs {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .spec {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--gris4);
+  }
+  .spec svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  .tarjeta-estado {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .estado-nuevo { background: rgba(99,153,34,0.15); color: #85c240; }
+  .estado-usado { background: rgba(186,117,23,0.15); color: #e8a930; }
+  .estado-reservado { background: rgba(37,99,168,0.15); color: var(--acento); }
+
+  /* ── CARD VACÍA (para agregar auto) ── */
+  .tarjeta-agregar {
+    background: transparent;
+    border: 1.5px dashed var(--gris2);
+    border-radius: var(--radio);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    gap: 10px;
+    color: var(--gris3);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    font-size: 13px;
+  }
+  .tarjeta-agregar:hover { border-color: var(--acento); color: var(--acento); }
+  .tarjeta-agregar svg { width: 32px; height: 32px; }
+
+  /* ── MODAL ── */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop.abierto { display: flex; }
+
+  .modal {
+    background: var(--gris1);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .modal-foto {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 16px 16px 0 0;
+    display: block;
+    background: var(--gris2);
+  }
+  .modal-foto-placeholder {
+    width: 100%;
+    height: 240px;
+    background: var(--gris2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px 16px 0 0;
+    color: var(--gris3);
+    font-size: 13px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modal-body { padding: 24px; }
+
+  .modal-cerrar {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-nombre {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .modal-precio {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    color: var(--acento);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  .modal-specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .modal-spec-item {
+    background: var(--gris2);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .modal-spec-label { font-size: 11px; color: var(--gris4); margin-bottom: 3px; }
+  .modal-spec-value { font-size: 14px; font-weight: 500; }
+
+  .modal-desc {
+    font-size: 13px;
+    color: var(--gris4);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .btn-wsp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background: #25D366;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-wsp:hover { background: #1ebe5d; }
+  .btn-wsp svg { width: 20px; height: 20px; }
+
+  /* ── SECCIÓN CONTACTO ── */
+  #contacto {
+    background: var(--gris1);
+    border-top: 0.5px solid var(--borde);
+    border-bottom: 0.5px solid var(--borde);
+    padding: 60px 32px;
+  }
+
+  .contacto-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .contacto-titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .contacto-titulo span { color: var(--acento); }
+
+  .contacto-sub {
+    font-size: 14px;
+    color: var(--gris4);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .contacto-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contacto-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--blanco);
+    text-decoration: none;
+    padding: 12px 16px;
+    background: var(--gris2);
+    border-radius: 10px;
+    border: 0.5px solid var(--borde);
+    transition: border-color 0.2s;
+  }
+  .contacto-link:hover { border-color: var(--acento); }
+  .contacto-link svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--acento); }
+  .contacto-link span { color: var(--gris4); font-size: 12px; display: block; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+  }
+  .footer-logo span { color: var(--acento); }
+
+  .footer-info {
+    font-size: 12px;
+    color: var(--gris4);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    #autos, #contacto { padding: 48px 20px; }
+    .contacto-inner { grid-template-columns: 1fr; gap: 32px; }
+    .footer-info { text-align: left; }
+    footer { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="logo">RG <span>Automotores</span></a>
+  <ul class="nav-links">
+    <li><a href="#autos">Vehículos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="https://instagram.com/rg_automotoress_" target="_blank">Instagram</a></li>
+    <li><a href="https://wa.me/543644233120" target="_blank" class="nav-cta">WhatsApp</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <p class="hero-eyebrow">Sáenz Peña, Chaco</p>
+  <h1>Tu próximo<br><span>auto</span><br>está aquí</h1>
+  <p class="hero-sub">En RG Automotores encontrás vehículos seleccionados con toda la documentación al día y financiación disponible.</p>
+  <div class="hero-badges">
+    <div class="badge">✓ Financiación disponible</div>
+    <div class="badge">✓ Documentación en regla</div>
+    <div class="badge">📸 @rg_automotoress_</div>
+  </div>
+</section>
+
+<!-- ═══ AUTOS ═══ -->
+<section id="autos">
+  <div class="section-header">
+    <div class="section-title">Nuestros <span>vehículos</span></div>
+  </div>
+
+  <div class="filtros">
+    <button class="filtro-btn activo" onclick="filtrar('todos', this)">Todos</button>
+    <button class="filtro-btn" onclick="filtrar('nuevo', this)">Nuevos</button>
+    <button class="filtro-btn" onclick="filtrar('usado', this)">Usados</button>
+    <button class="filtro-btn" onclick="filtrar('sedan', this)">Sedán</button>
+    <button class="filtro-btn" onclick="filtrar('suv', this)">SUV</button>
+    <button class="filtro-btn" onclick="filtrar('pickup', this)">Pickup</button>
+    <button class="filtro-btn" onclick="filtrar('hatchback', this)">Hatchback</button>
+  </div>
+
+  <div class="grilla" id="grilla"></div>
+</section>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-backdrop" id="modal" onclick="cerrarModal(event)">
+  <div class="modal" id="modalContenido"></div>
+</div>
+
+<!-- ═══ CONTACTO ═══ -->
+<section id="contacto">
+  <div class="contacto-inner">
+    <div>
+      <div class="contacto-titulo">Hablá con<br><span>nosotros</span></div>
+      <p class="contacto-sub">¿Tenés dudas sobre algún vehículo? ¿Querés consultar por financiación? Escribinos por WhatsApp o seguinos en Instagram.</p>
+    </div>
+    <div class="contacto-links">
+      <a href="https://wa.me/543644233120" target="_blank" class="contacto-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.845L.057 23.086a.75.75 0 0 0 .914.914l5.241-1.472A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0m0 22.5a10.45 10.45 0 0 1-5.379-1.488l-.375-.225-3.932 1.104 1.104-3.932-.225-.375A10.45 10.45 0 0 1 1.5 12C1.5 6.201 6.201 1.5 12 1.5S22.5 6.201 22.5 12 17.799 22.5 12 22.5"/></svg>
+        <div>
+          <strong>WhatsApp</strong>
+          <span>3644 233120 · respuesta rápida</span>
+        </div>
+      </a>
+      <a href="https://instagram.com/rg_automotoress_" target="_blank" class="contacto-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        <div>
+          <strong>@rg_automotoress_</strong>
+          <span>seguinos para ver novedades</span>
+        </div>
+      </a>
+      <a href="https://maps.google.com/?q=Saenz+Pena+Chaco+Argentina" target="_blank" class="contacto-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <div>
+          <strong>Sáenz Peña, Chaco</strong>
+          <span>Argentina</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">RG <span>Automotores</span></div>
+  <div class="footer-info">
+    Sáenz Peña, Chaco · Argentina<br>
+    @rg_automotoress_ · 3644 233120
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════
+//  ✏️  AGREGÁ TUS AUTOS AQUÍ
+//  Copiá un bloque { ... } y completá los datos
+//  Para la foto: poné la ruta de la imagen o una URL
+//  Dejá foto: "" si todavía no tenés foto
+// ══════════════════════════════════════════════
+const autos = [
+  {
+    id: 1,
+    nombre: "Tu primer auto",
+    anio: 2022,
+    precio: "$00.000.000",
+    tipo: "sedan",          // sedan | suv | pickup | hatchback
+    estado: "usado",        // nuevo | usado | reservado
+    km: "00.000 km",
+    motor: "1.6L Nafta",
+    transmision: "Manual",  // Manual | Automática
+    color: "Blanco",
+    foto: "",               // Ruta a la foto, ej: "fotos/auto1.jpg" o URL
+    descripcion: "Escribí aquí la descripción del auto. Contá el estado, si tiene service al día, extras, etc."
+  },
+  {
+    id: 2,
+    nombre: "Tu segundo auto",
+    anio: 2020,
+    precio: "$00.000.000",
+    tipo: "suv",
+    estado: "usado",
+    km: "00.000 km",
+    motor: "2.0L Diesel",
+    transmision: "Automática",
+    color: "Gris",
+    foto: "",
+    descripcion: "Describí este vehículo aquí."
+  }
+];
+// ══════════════════════════════════════════════
+
+const WSP_NUMERO = "543644233120";
+
+function renderGrilla(filtro) {
+  const grilla = document.getElementById('grilla');
+  const filtrados = filtro === 'todos' ? autos : autos.filter(a => a.tipo === filtro || a.estado === filtro);
+
+  grilla.innerHTML = filtrados.map(a => `
+    <div class="tarjeta" onclick="abrirModal(${a.id})">
+      ${a.foto
+        ? `<img class="tarjeta-foto" src="${a.foto}" alt="${a.nombre}" loading="lazy">`
+        : `<div class="tarjeta-foto-placeholder">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+             Agregar foto
+           </div>`
+      }
+      <div class="tarjeta-body">
+        <div class="tarjeta-top">
+          <div class="tarjeta-nombre">${a.nombre}</div>
+          <div class="tarjeta-anio">${a.anio}</div>
+        </div>
+        <div class="tarjeta-precio">${a.precio}</div>
+        <div class="tarjeta-specs">
+          <div class="spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ${a.km}
+          </div>
+          <div class="spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+            ${a.motor}
+          </div>
+        </div>
+        <span class="tarjeta-estado estado-${a.estado}">${a.estado}</span>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="tarjeta-agregar" onclick="alert('Para agregar un auto: abrí el archivo HTML en un editor de texto y agregá un bloque nuevo en el array de autos al inicio del script.')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Agregar vehículo
+    </div>
+  `;
+}
+
+function filtrar(tipo, btn) {
+  document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('activo'));
+  btn.classList.add('activo');
+  renderGrilla(tipo);
+}
+
+function abrirModal(id) {
+  const a = autos.find(x => x.id === id);
+  const msg = encodeURIComponent(`Hola! Me interesa el ${a.nombre} ${a.anio} que vi en su página web. ¿Está disponible?`);
+  document.getElementById('modalContenido').innerHTML = `
+    <button class="modal-cerrar" onclick="document.getElementById('modal').classList.remove('abierto')">✕</button>
+    ${a.foto
+      ? `<img class="modal-foto" src="${a.foto}" alt="${a.nombre}">`
+      : `<div class="modal-foto-placeholder">
+           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+           Sin foto todavía
+         </div>`
+    }
+    <div class="modal-body">
+      <div class="modal-nombre">${a.nombre}</div>
+      <div class="modal-precio">${a.precio}</div>
+      <div class="modal-specs-grid">
+        <div class="modal-spec-item"><div class="modal-spec-label">Año</div><div class="modal-spec-value">${a.anio}</div></div>
+        <div class="modal-spec-item"><div class="modal-spec-label">Kilometraje</div><div class="modal-spec-value">${a.km}</div></div>
+        <div class="modal-spec-item"><div class="modal-spec-label">Motor</div><div class="modal-spec-value">${a.motor}</div></div>
+        <div class="modal-spec-item"><div class="modal-spec-label">Transmisión</div><div class="modal-spec-value">${a.transmision}</div></div>
+        <div class="modal-spec-item"><div class="modal-spec-label">Color</div><div class="modal-spec-value">${a.color}</div></div>
+        <div class="modal-spec-item"><div class="modal-spec-label">Estado</div><div class="modal-spec-value" style="text-transform:capitalize">${a.estado}</div></div>
+      </div>
+      <p class="modal-desc">${a.descripcion}</p>
+      <a class="btn-wsp" href="https://wa.me/${WSP_NUMERO}?text=${msg}" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.845L.057 23.086a.75.75 0 0 0 .914.914l5.241-1.472A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0m0 22.5a10.45 10.45 0 0 1-5.379-1.488l-.375-.225-3.932 1.104 1.104-3.932-.225-.375A10.45 10.45 0 0 1 1.5 12C1.5 6.201 6.201 1.5 12 1.5S22.5 6.201 22.5 12 17.799 22.5 12 22.5"/></svg>
+        Consultar por WhatsApp
+      </a>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('abierto');
+}
+
+function cerrarModal(e) {
+  if (e.target.id === 'modal') document.getElementById('modal').classList.remove('abierto');
+}
+
+renderGrilla('todos');
+</script>
+</body>
+</html>
